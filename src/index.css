@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent: #10b981;
+  --color-accent-dark: #059669;
+  --color-accent-light: #34d399;
+}
+
+body {
+  background-color: #1c1917; /* stone-900 */
+  color: #f5f5f4;            /* stone-100 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #44403c; border-radius: 99px; }

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle - warm dark -->
+  <rect width="512" height="512" rx="110" fill="#1c1917"/>
+
+  <!-- Plate (large circle, light rim) -->
+  <circle cx="256" cy="272" r="168" fill="#292524"/>
+  <circle cx="256" cy="272" r="168" fill="none" stroke="#10b981" stroke-width="14"/>
+
+  <!-- Inner plate ring (subtle) -->
+  <circle cx="256" cy="272" r="118" fill="none" stroke="#10b981" stroke-width="4" opacity="0.3"/>
+
+  <!-- Fork (left of center) -->
+  <g transform="translate(196, 100)" fill="#10b981">
+    <!-- Fork handle -->
+    <rect x="14" y="140" width="12" height="110" rx="6"/>
+    <!-- Fork neck -->
+    <rect x="14" y="100" width="12" height="48" rx="4"/>
+    <!-- Tines (3 prongs) -->
+    <rect x="6"  y="54" width="7" height="54" rx="3.5"/>
+    <rect x="16" y="54" width="7" height="54" rx="3.5"/>
+    <rect x="26" y="54" width="7" height="54" rx="3.5"/>
+  </g>
+
+  <!-- Knife (right of center) -->
+  <g transform="translate(296, 100)" fill="#10b981">
+    <!-- Knife handle -->
+    <rect x="14" y="140" width="12" height="110" rx="6"/>
+    <!-- Blade body -->
+    <rect x="14" y="60" width="12" height="88" rx="4"/>
+    <!-- Blade tip (tapered) -->
+    <path d="M14 60 Q14 40 26 54 L26 60 Z"/>
+  </g>
+
+  <!-- Small sparkle / star in the center of the plate to hint at AI -->
+  <g transform="translate(256,272)" fill="#10b981" opacity="0.85">
+    <polygon points="0,-22 5,-8 20,-8 8,2 13,18 0,9 -13,18 -8,2 -20,-8 -5,-8" />
+  </g>
+</svg>
