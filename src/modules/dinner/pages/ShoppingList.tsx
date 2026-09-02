@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef, useEffect } from 'react';
-import { useStore } from '../store/useStore';
-import type { ShoppingListItem } from '../types';
+import { useStore } from '../../../core/store/useStore';
+import type { ShoppingListItem } from '../../../core/types';
 import { CheckCircle2, Circle, Trash2, Package, Plus, Trash, RefreshCw } from 'lucide-react';
 import { getAllGroceryNames, STORE_CATEGORY_ORDER, type GroceryCategory } from '../data/groceries';
 

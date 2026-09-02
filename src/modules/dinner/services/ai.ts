@@ -1,5 +1,5 @@
-import type { AIPreferences, Recipe } from '../types';
-import { useStore } from '../store/useStore';
+import type { AIPreferences, Recipe } from '../../../core/types';
+import { useStore } from '../../../core/store/useStore';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;

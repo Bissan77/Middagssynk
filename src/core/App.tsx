@@ -5,9 +5,9 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import AuthScreen from './components/AuthScreen';
 import HouseholdSetup from './components/HouseholdSetup';
 import Navbar from './components/Navbar';
-import MealPlan from './pages/MealPlan';
-import RecipeBank from './pages/RecipeBank';
-import ShoppingList from './pages/ShoppingList';
+import MealPlan from '../modules/dinner/pages/MealPlan';
+import RecipeBank from '../modules/dinner/pages/RecipeBank';
+import ShoppingList from '../modules/dinner/pages/ShoppingList';
 import { auth, db } from './firebase';
 import { useFirestoreSync } from './hooks/useFirestoreSync';
 

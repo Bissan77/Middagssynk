@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useStore } from '../store/useStore';
+import { useStore } from '../../../core/store/useStore';
 import { Search, X, Users } from 'lucide-react';
-import type { Recipe } from '../types';
+import type { Recipe } from '../../../core/types';
 
 interface RecipeSelectionModalProps {
   onClose: () => void;

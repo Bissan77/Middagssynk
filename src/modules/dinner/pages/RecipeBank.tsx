@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { useStore } from '../store/useStore';
+import { useStore } from '../../../core/store/useStore';
 import RecipeCard from '../components/RecipeCard';
 import { Search, Plus, Link as LinkIcon, Loader2 } from 'lucide-react';
 import RecipeForm from '../components/RecipeForm';
 import { importRecipeFromUrl } from '../services/ai';
 import RecipeDetailsModal from '../components/RecipeDetailsModal';
-import type { Recipe } from '../types';
+import type { Recipe } from '../../../core/types';
 
 export default function RecipeBank() {
     const recipes = useStore(state => state.recipes);

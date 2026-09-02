@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { X, Camera, CheckCircle2, Loader2, Leaf } from 'lucide-react';
 import { generateZeroWasteRecipe } from '../services/ai';
-import { useStore } from '../store/useStore';
-import type { Recipe } from '../types';
+import { useStore } from '../../../core/store/useStore';
+import type { Recipe } from '../../../core/types';
 
 interface KylskapsrensningModalProps {
     onClose: () => void;

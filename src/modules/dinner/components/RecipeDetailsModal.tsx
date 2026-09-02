@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Users, Plus, Minus, Trash2 } from 'lucide-react';
-import type { Recipe } from '../types';
-import { useStore } from '../store/useStore';
+import type { Recipe } from '../../../core/types';
+import { useStore } from '../../../core/store/useStore';
 
 interface RecipeDetailsModalProps {
     recipe: Recipe;

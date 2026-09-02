@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Plus, Minus, Trash2, ArrowLeft, Save, PlusCircle } from 'lucide-react';
-import type { Recipe, Ingredient, Unit } from '../types';
-import { useStore } from '../store/useStore';
+import type { Recipe, Ingredient, Unit } from '../../../core/types';
+import { useStore } from '../../../core/store/useStore';
 
 interface RecipeFormProps {
   onCancel: () => void;

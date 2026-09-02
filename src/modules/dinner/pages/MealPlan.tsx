@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { format, addDays, startOfWeek } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { useStore } from '../store/useStore';
+import { useStore } from '../../../core/store/useStore';
 import DayCard from '../components/DayCard';
 import { Sparkles, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
 import AIPreferencesModal from '../components/AIPreferencesModal';
 import AISuggestionModal from '../components/AISuggestionModal';
 import { generateAIRecipes } from '../services/ai';
-import type { Recipe, AIPreferences } from '../types';
+import type { Recipe, AIPreferences } from '../../../core/types';
 
 export default function MealPlan() {
     const mealPlan = useStore(state => state.mealPlan);

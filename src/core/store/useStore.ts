@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Recipe, MealPlanItem, ShoppingListItem } from '../types';
-import { categorizeItem, type GroceryCategory } from '../data/groceries';
+import { categorizeItem, type GroceryCategory } from '../../modules/dinner/data/groceries';
 import { db } from '../firebase';
 import {
     collection,
@@ -15,6 +15,8 @@ import {
     writeBatch,
 } from 'firebase/firestore';
 
+// TODO(architecture): Split core and dinner state when subscriptions needs isolated state;
+// move dinner domain types from core/types to modules/dinner/types at the same time.
 const recipesCol = () => collection(db, 'recipes');
 const mealPlanCol = () => collection(db, 'mealPlan');
 const shoppingListCol = () => collection(db, 'shoppingList');
@@ -55,7 +57,9 @@ const resolveMealPlanDoc = async (id: string, householdId: string) => {
 
 interface AppState {
     householdId: string | null;
+    ownerId: string | null;
     inviteCode: string | null;
+    inviteExpiresAt: Date | null;
     categoryOverrides: Record<string, GroceryCategory>;
     recipes: Recipe[];
     mealPlan: MealPlanItem[];
@@ -63,7 +67,9 @@ interface AppState {
     isLoaded: boolean;
 
     _setHouseholdId: (id: string) => void;
+    _setOwnerId: (id: string | null) => void;
     _setInviteCode: (code: string | null) => void;
+    _setInviteExpiresAt: (expiresAt: Date | null) => void;
     _setCategoryOverrides: (overrides: Record<string, GroceryCategory>) => void;
     _setRecipes: (recipes: Recipe[]) => void;
     _setMealPlan: (mealPlan: MealPlanItem[]) => void;
@@ -90,7 +96,9 @@ interface AppState {
 
 export const useStore = create<AppState>((set, get) => ({
     householdId: null,
+    ownerId: null,
     inviteCode: null,
+    inviteExpiresAt: null,
     categoryOverrides: {},
     recipes: [],
     mealPlan: [],
@@ -105,12 +113,16 @@ export const useStore = create<AppState>((set, get) => ({
                 recipes: [],
                 mealPlan: [],
                 shoppingList: [],
+                ownerId: null,
                 inviteCode: null,
+                inviteExpiresAt: null,
                 categoryOverrides: {},
                 isLoaded: false,
             }
     )),
+    _setOwnerId: (id) => set({ ownerId: id }),
     _setInviteCode: (code) => set({ inviteCode: code }),
+    _setInviteExpiresAt: (expiresAt) => set({ inviteExpiresAt: expiresAt }),
     _setCategoryOverrides: (overrides) => set({ categoryOverrides: overrides }),
     _setRecipes: (recipes) => set({ recipes }),
     _setMealPlan: (mealPlan) => set({ mealPlan }),

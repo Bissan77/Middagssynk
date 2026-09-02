@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Zap, PiggyBank, Flag, Utensils, TextCursorInput, Sparkles } from 'lucide-react';
-import type { AIPreferences } from '../types';
+import type { AIPreferences } from '../../../core/types';
 
 interface AIPreferencesModalProps {
   onClose: () => void;

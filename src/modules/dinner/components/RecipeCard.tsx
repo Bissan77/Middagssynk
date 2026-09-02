@@ -1,5 +1,5 @@
 import { Users } from 'lucide-react';
-import type { Recipe } from '../types';
+import type { Recipe } from '../../../core/types';
 
 interface RecipeCardProps {
     recipe: Recipe;

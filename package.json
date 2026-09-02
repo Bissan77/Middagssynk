@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && npx firebase-tools deploy --only hosting"
+    "test:firestore-rules": "npx firebase-tools emulators:exec --only firestore \"node --test tests/firestore/invite.rules.test.mjs\"",
+    "deploy": "npm run build && npx firebase-tools deploy --only hosting,firestore:rules"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@firebase/rules-unit-testing": "^5.0.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",

@@ -1,14 +1,11 @@
 import { useState, type FormEvent } from 'react';
 import { signOut } from 'firebase/auth';
 import {
-    arrayUnion,
+    FieldPath,
     collection,
     doc,
-    getDocs,
-    limit,
-    query,
+    getDoc,
     serverTimestamp,
-    where,
     writeBatch,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
@@ -18,13 +15,6 @@ type HouseholdSetupProps = {
 };
 
 const INVITE_CODE_LENGTH = 6;
-const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-function createInviteCode() {
-    return Array.from({ length: INVITE_CODE_LENGTH }, () =>
-        INVITE_CODE_CHARS[Math.floor(Math.random() * INVITE_CODE_CHARS.length)],
-    ).join('');
-}
 
 export default function HouseholdSetup({ uid }: HouseholdSetupProps) {
     const [inviteCode, setInviteCode] = useState('');
@@ -44,8 +34,11 @@ export default function HouseholdSetup({ uid }: HouseholdSetupProps) {
             const batch = writeBatch(db);
 
             batch.set(newHouseholdRef, {
-                inviteCode: createInviteCode(),
-                members: [uid],
+                name: '',
+                ownerId: uid,
+                members: { [uid]: 'owner' },
+                inviteCode: null,
+                inviteExpiresAt: null,
                 createdAt: serverTimestamp(),
             });
             batch.set(userRef, { householdId: newHouseholdRef.id }, { merge: true });
@@ -72,32 +65,41 @@ export default function HouseholdSetup({ uid }: HouseholdSetupProps) {
                 return;
             }
 
-            const householdsQuery = query(
-                collection(db, 'households'),
-                where('inviteCode', '==', normalizedCode),
-                limit(1),
-            );
-            const householdsSnap = await getDocs(householdsQuery);
+            const inviteCodeRef = doc(db, 'inviteCodes', normalizedCode);
+            const inviteCodeSnap = await getDoc(inviteCodeRef);
 
-            if (householdsSnap.empty) {
-                setError('Koden finns inte.');
+            if (!inviteCodeSnap.exists()) {
+                setError('Koden har gått ut eller redan använts.');
                 return;
             }
 
-            const householdDoc = householdsSnap.docs[0];
-            const householdRef = doc(db, 'households', householdDoc.id);
+            const householdId = inviteCodeSnap.data().householdId;
+
+            if (typeof householdId !== 'string') {
+                setError('Koden har gått ut eller redan använts.');
+                return;
+            }
+
+            const householdRef = doc(db, 'households', householdId);
             const userRef = doc(db, 'users', uid);
             const batch = writeBatch(db);
 
-            batch.update(householdRef, {
-                members: arrayUnion(uid),
-            });
-            batch.set(userRef, { householdId: householdDoc.id }, { merge: true });
+            batch.update(
+                householdRef,
+                new FieldPath('members', uid),
+                'member',
+                'inviteCode',
+                null,
+                'inviteExpiresAt',
+                null,
+            );
+            batch.delete(inviteCodeRef);
+            batch.set(userRef, { householdId }, { merge: true });
 
             await batch.commit();
         } catch (err) {
             console.error('Kunde inte ga med i hushall:', err);
-            setError('Kunde inte ga med i hushallet. Forsok igen.');
+            setError('Koden har gått ut eller redan använts.');
         } finally {
             setIsJoining(false);
         }

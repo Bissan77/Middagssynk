@@ -9,13 +9,16 @@ import {
     doc,
     onSnapshot,
     query,
+    Timestamp,
     where,
     type DocumentData,
     type QuerySnapshot,
 } from 'firebase/firestore';
 import { db } from '../firebase';
+// TODO(architecture): Split core and dinner state when subscriptions needs isolated state;
+// move dinner domain types from core/types to modules/dinner/types at the same time.
 import { useStore } from '../store/useStore';
-import type { GroceryCategory } from '../data/groceries';
+import type { GroceryCategory } from '../../modules/dinner/data/groceries';
 import type { MealPlanItem, Recipe, ShoppingListItem } from '../types';
 
 export function useFirestoreSync(householdId: string) {
@@ -23,6 +26,8 @@ export function useFirestoreSync(householdId: string) {
     const _setMealPlan = useStore(s => s._setMealPlan);
     const _setShoppingList = useStore(s => s._setShoppingList);
     const _setLoaded = useStore(s => s._setLoaded);
+    const _setOwnerId = useStore(s => s._setOwnerId);
+    const _setInviteExpiresAt = useStore(s => s._setInviteExpiresAt);
 
     const loadedCollections = useRef(new Set<string>());
     const markOne = (collectionName: string) => {
@@ -81,7 +86,15 @@ export function useFirestoreSync(householdId: string) {
             householdDoc,
             (snap) => {
                 const data = snap.data();
+                _setOwnerId(
+                    typeof data?.ownerId === 'string' ? data.ownerId : null,
+                );
                 useStore.getState()._setInviteCode(data?.inviteCode || null);
+                _setInviteExpiresAt(
+                    data?.inviteExpiresAt instanceof Timestamp
+                        ? data.inviteExpiresAt.toDate()
+                        : null,
+                );
                 useStore.getState()._setCategoryOverrides(
                     (data?.categoryOverrides as Record<string, GroceryCategory>) || {},
                 );
@@ -96,5 +109,13 @@ export function useFirestoreSync(householdId: string) {
             unsubscribeHousehold();
             loadedCollections.current.clear();
         };
-    }, [householdId, _setRecipes, _setMealPlan, _setShoppingList, _setLoaded]);
+    }, [
+        householdId,
+        _setRecipes,
+        _setMealPlan,
+        _setShoppingList,
+        _setLoaded,
+        _setOwnerId,
+        _setInviteExpiresAt,
+    ]);
 }

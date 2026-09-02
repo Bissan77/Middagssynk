@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, Clock, Users, ChefHat, Check, PlusCircle } from 'lucide-react';
-import type { Recipe } from '../types';
+import type { Recipe } from '../../../core/types';
 
 interface AISuggestionModalProps {
   recipes: Recipe[];

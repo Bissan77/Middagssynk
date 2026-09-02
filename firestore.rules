@@ -1,0 +1,113 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    function isMember(householdId) {
+      return isAuth() &&
+        request.auth.uid in get(/databases/$(database)/documents/households/$(householdId)).data.members;
+    }
+
+    // householdId-validering medvetet borttagen: join sker i writeBatch tillsammans
+    // med members-uppdatering, och get() i regler ser inte pending batch-state.
+    // Domandata skyddas via isMember() — felaktigt users.householdId ger ingen dataatkomst.
+    match /users/{userId} {
+      allow read, write: if isAuth() && request.auth.uid == userId;
+    }
+
+    // Lookup-tabell for inbjudningskoder.
+    match /inviteCodes/{code} {
+      allow get: if isAuth();
+      allow list: if false;
+
+      allow create: if isAuth() &&
+        request.resource.data.householdId is string &&
+        request.auth.uid == get(/databases/$(database)/documents/households/$(request.resource.data.householdId)).data.ownerId;
+
+      allow update: if false;
+
+      // En kod far endast konsumeras i samma atomara batch som en giltig join.
+      allow delete: if isAuth() &&
+        resource.data.householdId is string &&
+        get(/databases/$(database)/documents/households/$(resource.data.householdId)).data.inviteCode == code &&
+        !(request.auth.uid in get(/databases/$(database)/documents/households/$(resource.data.householdId)).data.members) &&
+        getAfter(/databases/$(database)/documents/households/$(resource.data.householdId)).data.inviteCode == null &&
+        getAfter(/databases/$(database)/documents/households/$(resource.data.householdId)).data.members[request.auth.uid] == 'member';
+    }
+
+    match /households/{householdId} {
+      allow read: if isMember(householdId);
+
+      allow create: if isAuth() &&
+        request.resource.data.members.keys().hasOnly([request.auth.uid]) &&
+        request.resource.data.members[request.auth.uid] == 'owner' &&
+        request.resource.data.ownerId == request.auth.uid;
+
+      allow delete: if false;
+
+      allow update: if isAuth() && (
+        isValidJoin() ||
+        isOwnerManaging() ||
+        isMemberUpdatingCategoryOverrides()
+      );
+
+      function isValidJoin() {
+        let before = resource.data;
+        let after = request.resource.data;
+        return
+          !(request.auth.uid in before.members) &&
+          after.members.diff(before.members).affectedKeys().hasOnly([request.auth.uid]) &&
+          after.members[request.auth.uid] == 'member' &&
+          after.name == before.name &&
+          after.ownerId == before.ownerId &&
+          before.inviteCode is string &&
+          before.inviteExpiresAt > request.time &&
+          after.inviteCode == null &&
+          exists(/databases/$(database)/documents/inviteCodes/$(before.inviteCode)) &&
+          get(/databases/$(database)/documents/inviteCodes/$(before.inviteCode)).data.householdId == householdId &&
+          !existsAfter(/databases/$(database)/documents/inviteCodes/$(before.inviteCode));
+      }
+
+      // MVP: owner far uppdatera alla falt sa lange ownerId ar oforandrat.
+      // TODO(tech-debt): begransa till specifika falt (members, inviteCode, m.m.).
+      function isOwnerManaging() {
+        return request.auth.uid == resource.data.ownerId &&
+          request.resource.data.ownerId == resource.data.ownerId;
+      }
+
+      function isMemberUpdatingCategoryOverrides() {
+        let before = resource.data;
+        let after = request.resource.data;
+        return isMember(householdId) &&
+          after.diff(before).affectedKeys().hasOnly(['categoryOverrides']);
+      }
+    }
+
+    match /recipes/{docId} {
+      allow read, delete: if isMember(resource.data.householdId);
+      allow create: if isMember(request.resource.data.householdId);
+      allow update: if isMember(resource.data.householdId) &&
+        isMember(request.resource.data.householdId) &&
+        request.resource.data.householdId == resource.data.householdId;
+    }
+
+    match /mealPlan/{docId} {
+      allow read, delete: if isMember(resource.data.householdId);
+      allow create: if isMember(request.resource.data.householdId);
+      allow update: if isMember(resource.data.householdId) &&
+        isMember(request.resource.data.householdId) &&
+        request.resource.data.householdId == resource.data.householdId;
+    }
+
+    match /shoppingList/{docId} {
+      allow read, delete: if isMember(resource.data.householdId);
+      allow create: if isMember(request.resource.data.householdId);
+      allow update: if isMember(resource.data.householdId) &&
+        isMember(request.resource.data.householdId) &&
+        request.resource.data.householdId == resource.data.householdId;
+    }
+  }
+}

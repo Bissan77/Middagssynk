@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import type { MealPlanItem, Recipe } from '../types';
+import type { MealPlanItem, Recipe } from '../../../core/types';
 import { X, Plus, Minus, Move, Trash2, BookOpen } from 'lucide-react';
 import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
 import { sv } from 'date-fns/locale';
