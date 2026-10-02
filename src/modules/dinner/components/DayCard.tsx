@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Search, Type } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import type { MealPlanItem, Recipe } from '../../../core/types';
 import { useStore } from '../../../core/store/useStore';
 import RecipeSelectionModal from './RecipeSelectionModal';
@@ -24,6 +24,9 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
     const [viewingRecipe, setViewingRecipe] = useState<Recipe | null>(null);
+    const [freeTextDraft, setFreeTextDraft] = useState<string | null>(null);
+    const [freeTextError, setFreeTextError] = useState<string | null>(null);
+    const [isSavingFreeText, setIsSavingFreeText] = useState(false);
 
     const handlePortionChange = async (delta: number) => {
         if (mealPlanItem && mealPlanItem.adjustedPortions + delta > 0) {
@@ -31,21 +34,27 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
         }
     };
 
-    const handleAddFreeText = async () => {
-        const text = window.prompt('Vad vill du äta? (t.ex. Pannkakor, Utemat)');
-        if (!text || text.trim() === '') return;
-        
+    const handleAddFreeText = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const text = freeTextDraft?.trim();
+        if (!text || isSavingFreeText) return;
+
+        setFreeTextError(null);
+        setIsSavingFreeText(true);
         try {
             await addMealPlanItem({
                 id: `mp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                 date: format(date, 'yyyy-MM-dd'),
                 adjustedPortions: 4,
                 isFreeText: true,
-                freeText: text.trim()
+                freeText: text
             });
+            setFreeTextDraft(null);
         } catch (error) {
             console.error("Kunde inte spara fritext till databasen:", error);
-            alert("Något gick fel vid sparningen. Försök igen.");
+            setFreeTextError('Något gick fel vid sparningen. Försök igen.');
+        } finally {
+            setIsSavingFreeText(false);
         }
     };
 
@@ -97,23 +106,58 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
                     <span className="text-text-muted text-xs flex-shrink-0">›</span>
                 </button>
             ) : (
-                /* Empty slot — dashed two-button grid */
-                <div className="grid grid-cols-2 gap-2">
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs hover:border-action-primary hover:text-action-primary"
-                    >
-                        <Search className="w-3.5 h-3.5" />
-                        <span>Välj recept</span>
-                    </button>
-                    <button
-                        onClick={handleAddFreeText}
-                        className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs"
-                    >
-                        <Type className="w-3.5 h-3.5" />
-                        <span>Fritext</span>
-                    </button>
-                </div>
+                /* Empty slot */
+                freeTextDraft !== null ? (
+                    <form onSubmit={(event) => void handleAddFreeText(event)} className="space-y-2">
+                        <label htmlFor={`free-text-${format(date, 'yyyy-MM-dd')}`} className="block text-sm font-medium text-text-secondary">
+                            Vad vill du äta?
+                        </label>
+                        <input
+                            id={`free-text-${format(date, 'yyyy-MM-dd')}`}
+                            type="text"
+                            value={freeTextDraft}
+                            onChange={(event) => setFreeTextDraft(event.target.value)}
+                            placeholder="T.ex. Pannkakor eller utemat"
+                            className="ui-input w-full px-3 py-2 text-base"
+                            autoFocus
+                        />
+                        {freeTextError && <p role="alert" className="text-sm text-danger">{freeTextError}</p>}
+                        <div className="flex gap-2">
+                            <button
+                                type="button"
+                                onClick={() => { setFreeTextDraft(null); setFreeTextError(null); }}
+                                disabled={isSavingFreeText}
+                                className="ui-button ui-button-secondary flex-1 text-sm"
+                            >
+                                Avbryt
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={!freeTextDraft.trim() || isSavingFreeText}
+                                className="ui-button ui-button-primary flex-1 text-sm"
+                            >
+                                {isSavingFreeText ? 'Sparar…' : 'Spara middag'}
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs hover:border-action-primary hover:text-action-primary"
+                        >
+                            <Search className="w-3.5 h-3.5" />
+                            <span>Välj recept</span>
+                        </button>
+                        <button
+                            onClick={() => { setFreeTextDraft(''); setFreeTextError(null); }}
+                            className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs"
+                        >
+                            <Type className="w-3.5 h-3.5" />
+                            <span>Fritext</span>
+                        </button>
+                    </div>
+                )
             )}
 
             {isModalOpen && (
