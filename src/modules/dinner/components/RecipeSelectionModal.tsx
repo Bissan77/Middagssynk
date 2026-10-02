@@ -31,34 +31,34 @@ export default function RecipeSelectionModal({ onClose, onSelect, activeDateStr 
       onClick={onClose}
     >
       <div 
-        className="bg-stone-900 w-full max-w-lg rounded-t-2xl sm:rounded-2xl border border-stone-700/40 overflow-y-auto overscroll-contain flex flex-col max-h-[80vh]"
+        className="ui-sheet w-full max-w-lg rounded-t-2xl sm:rounded-2xl overflow-y-auto overscroll-contain flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
 
         {/* Header */}
-        <div className="px-4 py-3 flex items-center justify-between border-b border-stone-700/40 flex-shrink-0">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-border-subtle flex-shrink-0">
           <div>
-            <h2 className="text-sm font-semibold text-stone-100">Välj recept</h2>
-            <p className="text-[10px] text-accent-light capitalize">{activeDateStr}</p>
+            <h2 className="text-sm font-semibold text-text-primary">Välj recept</h2>
+            <p className="text-[10px] text-action-primary capitalize">{activeDateStr}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 bg-stone-800 text-stone-400 hover:text-stone-100 rounded-lg transition-all duration-200"
+            className="ui-icon-button h-8 w-8"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Search */}
-        <div className="px-3 py-2.5 border-b border-stone-700/40 flex-shrink-0">
+        <div className="px-3 py-2.5 border-b border-border-subtle flex-shrink-0">
           <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-500" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-text-muted" />
             <input
               type="text"
               placeholder="Sök bland dina recept..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-stone-800 border border-stone-700/60 rounded-lg py-2 pl-9 pr-3 text-stone-200 placeholder:text-stone-600 focus:outline-none focus:ring-1 focus:ring-accent/50 transition-all duration-200 text-base"
+              className="ui-input py-2 pl-9 pr-3 text-base"
               autoFocus
             />
           </div>
@@ -72,9 +72,9 @@ export default function RecipeSelectionModal({ onClose, onSelect, activeDateStr 
                 <button
                   key={recipe.id}
                   onClick={() => onSelect(recipe)}
-                  className="w-full text-left flex items-center gap-3 p-2.5 rounded-lg hover:bg-stone-800 border border-transparent hover:border-stone-700/50 transition-all duration-200"
+                  className="w-full text-left flex items-center gap-3 p-2.5 rounded-lg hover:bg-surface-sunken border border-transparent hover:border-border-subtle transition-all duration-200"
                 >
-                  <div className="h-11 w-11 min-w-[44px] rounded-lg bg-stone-800 overflow-hidden flex-shrink-0 border border-stone-700/40">
+                  <div className="h-11 w-11 min-w-[44px] rounded-lg bg-surface-sunken overflow-hidden flex-shrink-0 border border-border-subtle">
                     {recipe.imageUrl ? (
                       <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" />
                     ) : (
@@ -82,12 +82,12 @@ export default function RecipeSelectionModal({ onClose, onSelect, activeDateStr 
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-stone-200 truncate leading-snug">{recipe.title}</p>
-                    <div className="flex items-center gap-1.5 text-[10px] text-stone-500 mt-0.5">
+                    <p className="text-sm font-medium text-text-primary truncate leading-snug">{recipe.title}</p>
+                    <div className="flex items-center gap-1.5 text-[10px] text-text-muted mt-0.5">
                       <Users className="w-3 h-3" />
                       <span>{recipe.portions} port</span>
                       {recipe.tags.length > 0 && (
-                        <span className="text-stone-700">•</span>
+                        <span className="text-border-strong">•</span>
                       )}
                       <span className="truncate">{recipe.tags.slice(0, 2).join(', ')}</span>
                     </div>
@@ -96,7 +96,7 @@ export default function RecipeSelectionModal({ onClose, onSelect, activeDateStr 
               ))}
             </div>
           ) : (
-            <div className="text-center py-10 text-stone-600">
+            <div className="text-center py-10 text-text-muted">
               <p className="text-xs">Inga recept hittades.</p>
             </div>
           )}

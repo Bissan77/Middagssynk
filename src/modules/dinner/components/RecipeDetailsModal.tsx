@@ -51,12 +51,12 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
             onClick={onClose}
         >
             <div 
-                className="bg-stone-900 w-full max-w-lg rounded-t-2xl sm:rounded-2xl flex flex-col max-h-[80vh] overflow-y-auto overscroll-contain border border-stone-700/40"
+                className="ui-sheet w-full max-w-lg rounded-t-2xl sm:rounded-2xl flex flex-col max-h-[80vh] overflow-y-auto overscroll-contain"
                 onClick={(e) => e.stopPropagation()}
             >
 
                 {/* Hero */}
-                <div className="relative h-44 sm:h-52 flex-shrink-0 bg-stone-800 overflow-hidden">
+                <div className="relative h-44 sm:h-52 flex-shrink-0 bg-surface-sunken overflow-hidden">
                     {recipe.imageUrl ? (
                         <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" />
                     ) : (
@@ -64,10 +64,10 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
                             <span className="text-7xl opacity-30">🍲</span>
                         </div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-stone-900 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-text-primary to-transparent" />
                     <button
                         onClick={onClose}
-                        className="absolute top-3 right-3 p-2 bg-stone-900/70 backdrop-blur-sm text-stone-300 hover:text-stone-100 rounded-lg transition-all duration-200"
+                        className="ui-icon-button absolute top-3 right-3 bg-surface-raised/80 backdrop-blur-sm"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -75,25 +75,25 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
 
                 {/* Content */}
                 <div className="px-4 pb-32">
-                    <h1 className="text-xl font-bold text-stone-100 tracking-tight mt-3 mb0.5-sm leading-snug">
+                    <h1 className="text-xl font-bold text-text-primary tracking-tight mt-3 mb0.5-sm leading-snug">
                         {recipe.title}
                     </h1>
 
                     <div className="flex flex-wrap items-center justify-between gap-1.5 mb-4">
-                        <div className="flex items-center gap-3 bg-stone-800 px-2.5 py-1.5 rounded-lg border border-stone-700/60">
+                        <div className="flex items-center gap-3 bg-surface-sunken px-2.5 py-1.5 rounded-lg border border-border-subtle">
                             <button 
                                 onClick={() => handleUpdatePortions(-1)} 
-                                className="p-0.5 hover:bg-stone-700 rounded text-stone-400 transition-all duration-200"
+                                className="ui-icon-button h-6 w-6"
                             >
                                 <Minus className="w-4 h-4" />
                             </button>
                             <div className="flex items-center gap-1.5">
-                                <Users className="w-3.5 h-3.5 text-accent-light" />
-                                <span className="font-bold text-stone-100 text-sm w-4 text-center">{currentPortions}</span>
+                                <Users className="w-3.5 h-3.5 text-action-primary" />
+                                <span className="font-bold text-text-primary text-sm w-4 text-center">{currentPortions}</span>
                             </div>
                             <button 
                                 onClick={() => handleUpdatePortions(1)} 
-                                className="p-0.5 hover:bg-stone-700 rounded text-stone-400 transition-all duration-200"
+                                className="ui-icon-button h-6 w-6"
                             >
                                 <Plus className="w-4 h-4" />
                             </button>
@@ -101,7 +101,7 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
                         
                         <div className="flex flex-wrap gap-1.5">
                             {recipe.tags.map(tag => (
-                                <span key={tag} className="px-2.5 py-1 bg-stone-800 text-stone-400 rounded-lg text-[10px] font-semibold border border-stone-700 uppercase tracking-wider">
+                                <span key={tag} className="px-2.5 py-1 bg-surface-sunken text-text-secondary rounded-lg text-[10px] font-semibold border border-border-subtle uppercase tracking-wider">
                                     {tag}
                                 </span>
                             ))}
@@ -110,17 +110,17 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
 
                     {/* Ingredients */}
                     <section className="mb-5">
-                        <h2 className="text-sm font-bold text-stone-200 mb-2 flex items-center gap-2">
-                            <span className="w-1 h-4 bg-accent rounded-full" />
+                        <h2 className="text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
+                            <span className="w-1 h-4 bg-action-primary rounded-full" />
                             Ingredienser
                         </h2>
-                        <div className="bg-stone-800 rounded-xl border border-stone-700/40 overflow-hidden divide-y divide-stone-700/30">
+                        <div className="bg-surface-sunken rounded-xl border border-border-subtle overflow-hidden divide-y divide-border-subtle">
                             {recipe.ingredients.map((ing, idx) => {
                                 const scaledAmount = Math.round((ing.amount * (currentPortions / basePortions)) * 10) / 10;
                                 return (
                                     <div key={ing.id ?? idx} className="flex items-center justify-between px-3 py-2.5">
-                                        <span className="text-stone-200 text-sm">{ing.name}</span>
-                                        <span className="text-stone-500 text-xs font-semibold ml-3 flex-shrink-0 bg-stone-700/50 px-2 py-0.5 rounded">
+                                        <span className="text-text-primary text-sm">{ing.name}</span>
+                                        <span className="text-text-muted text-xs font-semibold ml-3 flex-shrink-0 bg-surface-raised px-2 py-0.5 rounded">
                                             {scaledAmount} {ing.unit}
                                         </span>
                                     </div>
@@ -131,8 +131,8 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
 
                     {/* Instructions */}
                     <section>
-                        <h2 className="text-sm font-bold text-stone-200 mb-2 flex items-center gap-2">
-                            <span className="w-1 h-4 bg-accent rounded-full" />
+                        <h2 className="text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
+                            <span className="w-1 h-4 bg-action-primary rounded-full" />
                             Gör så här
                         </h2>
                         <div className="space-y-2.5">
@@ -140,10 +140,10 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
                                 const content = step.replace(/^\d+\.\s*/, '');
                                 return (
                                     <div key={idx} className="flex items-start gap-2.5">
-                                        <div className="flex-shrink-0 w-6 h-6 bg-accent/20 text-accent-light rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
+                                        <div className="flex-shrink-0 w-6 h-6 bg-action-soft text-action-primary rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                                             {idx + 1}
                                         </div>
-                                        <p className="text-stone-400 text-sm leading-relaxed flex-1 pt-0.5">{content}</p>
+                                        <p className="text-text-secondary text-sm leading-relaxed flex-1 pt-0.5">{content}</p>
                                     </div>
                                 );
                             })}
@@ -151,7 +151,7 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
                     </section>
 
                     {/* Danger zone */}
-                    <div className="mt-10 pt-6 border-t border-stone-800/60">
+                    <div className="mt-10 pt-6 border-t border-border-subtle">
                         <button
                             onClick={handleDelete}
                             className="w-full flex items-center justify-center gap-2 p-3 text-red-500/60 hover:text-red-400 hover:bg-red-900/10 rounded-xl transition-all duration-200 text-sm font-medium"

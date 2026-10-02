@@ -53,16 +53,16 @@ export default function RecipeBank() {
     }
 
     return (
-        <div className="p-4 pt-5 min-h-screen pb-28">
+        <div className="app-page min-h-screen pb-28">
             {/* Header */}
             <header className="mb-4 flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-stone-100 tracking-tight">Receptbank</h1>
-                    <p className="text-xs text-stone-500 mt-0.5">{recipes.length} sparade recept</p>
+                    <h1 className="text-2xl font-bold text-text-primary tracking-tight">Receptbank</h1>
+                    <p className="text-xs text-text-muted mt-0.5">{recipes.length} sparade recept</p>
                 </div>
                 <button
                     onClick={() => setIsCreating(true)}
-                    className="p-2.5 bg-stone-700 hover:bg-stone-600 text-stone-100 rounded-lg transition-all duration-200 active:scale-95"
+                    className="ui-icon-button ui-button-primary active:scale-95"
                 >
                     <Plus className="w-4 h-4" />
                 </button>
@@ -72,20 +72,20 @@ export default function RecipeBank() {
             {/* Import form */}
             <form onSubmit={handleImport} className="mb-4 flex gap-2">
                 <div className="relative flex-1">
-                    <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
+                    <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                     <input
                         type="url"
                         required
                         placeholder="Klistra in receptlänk..."
                         value={importUrl}
                         onChange={e => setImportUrl(e.target.value)}
-                        className="w-full bg-stone-800 border border-stone-700 rounded-lg py-2.5 pl-10 pr-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:ring-1 focus:ring-accent/60 focus:border-accent transition-all duration-200 text-base"
+                        className="ui-input py-2.5 pl-10 pr-3 text-base"
                     />
                 </div>
                 <button
                     type="submit"
                     disabled={!importUrl.trim() || isImporting}
-                    className="px-3 bg-stone-700 hover:bg-stone-600 text-stone-100 font-medium rounded-lg transition-all duration-200 disabled:opacity-40 flex items-center justify-center min-w-[88px]"
+                    className="ui-button ui-button-secondary min-w-[88px] disabled:opacity-40"
                 >
                     {isImporting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Importera'}
                 </button>
@@ -94,13 +94,13 @@ export default function RecipeBank() {
             {/* Search + tags */}
             <div className="mb-4 space-y-2.5">
                 <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
                     <input
                         type="text"
                         placeholder="Sök recept..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full bg-stone-800 border border-stone-700 rounded-lg py-2.5 pl-10 pr-3 text-stone-100 placeholder:text-stone-600 focus:outline-none focus:ring-1 focus:ring-accent/60 focus:border-accent transition-all duration-200 text-base"
+                        className="ui-input py-2.5 pl-10 pr-3 text-base"
                     />
                 </div>
 
@@ -112,8 +112,8 @@ export default function RecipeBank() {
                             onClick={() => setActiveTag(v)}
                             className={`whitespace-nowrap px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 flex-shrink-0 border ${
                                 activeTag === v
-                                    ? 'bg-accent text-white border-transparent'
-                                    : 'bg-stone-800 text-stone-400 border-stone-700 hover:border-stone-500'
+                                    ? 'bg-action-primary text-text-inverse border-transparent'
+                                    : 'bg-surface-raised text-text-secondary border-border-subtle hover:border-border-strong'
                             }`}
                         >
                             {l}
@@ -135,7 +135,7 @@ export default function RecipeBank() {
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-14 text-stone-600">
+                <div className="text-center py-14 text-text-muted">
                     <p className="text-3xl mb-2">🍳</p>
                     <p className="text-sm font-medium">Inga recept hittades.</p>
                 </div>

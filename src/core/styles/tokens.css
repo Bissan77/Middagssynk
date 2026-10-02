@@ -1,0 +1,57 @@
+@theme {
+  /* Ytor */
+  --color-surface-canvas: #f8fafc;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f1f5f9;
+  --color-surface-selected: #ecfeff;
+
+  /* Text */
+  --color-text-primary: #172033;
+  --color-text-secondary: #526079;
+  --color-text-muted: #75829a;
+  --color-text-inverse: #ffffff;
+
+  /* Kanter */
+  --color-border-subtle: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  /* Interaktion */
+  --color-action-primary: #0f766e;
+  --color-action-primary-hover: #115e59;
+  --color-action-primary-active: #134e4a;
+  --color-action-soft: #ccfbf1;
+  --color-focus: #0d9488;
+
+  /* Status */
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-soft: #fef3c7;
+
+  /* Layout och avstånd */
+  --spacing-page-x: 1.5rem;
+  --spacing-page-y: 2rem;
+  --spacing-section: 2rem;
+  --spacing-section-tight: 1.25rem;
+  --spacing-card: 1.25rem;
+  --spacing-card-tight: 1rem;
+  --spacing-control: 0.75rem;
+  --spacing-control-x: 1rem;
+
+  /* Form och ytor */
+  --radius-control: 0.75rem;
+  --radius-card: 1.25rem;
+  --radius-sheet: 1.5rem;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-floating: 0 12px 28px rgb(15 23 42 / 0.12);
+
+  /* Rörelse */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 150ms;
+  --duration-standard: 200ms;
+}

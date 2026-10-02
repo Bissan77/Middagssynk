@@ -65,9 +65,9 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
     };
 
     return (
-        <div className="bg-stone-800/60 rounded-xl border border-stone-700/60 p-3 mb-3">
+        <div className="ui-card p-3 mb-3">
             {/* Day label */}
-            <p className="text-sm font-semibold text-stone-300 capitalize mb-2">
+            <p className="text-sm font-semibold text-text-secondary capitalize mb-2">
                 {format(date, 'EEEE d/M', { locale: sv })}
             </p>
 
@@ -75,9 +75,9 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
                 /* Filled meal slot */
                 <button
                     onClick={() => setIsActionMenuOpen(true)}
-                    className="w-full flex items-center gap-3 p-2.5 rounded-lg border border-accent/25 bg-accent/5 hover:border-accent/40 hover:bg-accent/10 transition-all duration-200 active:scale-[0.99] text-left"
+                    className="w-full flex items-center gap-3 p-2.5 rounded-lg border border-action-primary/25 bg-action-soft hover:border-action-primary hover:bg-surface-selected transition-all duration-200 active:scale-[0.99] text-left"
                 >
-                    <div className="h-10 w-10 min-w-[40px] rounded-lg bg-stone-700 overflow-hidden flex-shrink-0 border border-stone-600/40">
+                    <div className="h-10 w-10 min-w-[40px] rounded-lg bg-surface-raised overflow-hidden flex-shrink-0 border border-border-subtle">
                         {recipe?.imageUrl ? (
                             <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" />
                         ) : (
@@ -87,28 +87,28 @@ export default function DayCard({ date, mealPlanItem }: DayCardProps) {
                         )}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-stone-100 text-sm leading-snug truncate">
+                        <p className="font-semibold text-text-primary text-sm leading-snug truncate">
                             {mealPlanItem.isFreeText ? mealPlanItem.freeText : recipe?.title}
                         </p>
                         {!mealPlanItem.isFreeText && (
-                            <p className="text-xs text-stone-500 mt-0.5">{mealPlanItem.adjustedPortions} portioner</p>
+                            <p className="text-xs text-text-muted mt-0.5">{mealPlanItem.adjustedPortions} portioner</p>
                         )}
                     </div>
-                    <span className="text-stone-600 text-xs flex-shrink-0">›</span>
+                    <span className="text-text-muted text-xs flex-shrink-0">›</span>
                 </button>
             ) : (
                 /* Empty slot — dashed two-button grid */
                 <div className="grid grid-cols-2 gap-2">
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 border border-dashed border-stone-700 rounded-lg text-xs font-medium text-stone-500 hover:border-accent/50 hover:text-accent-light hover:bg-accent/5 transition-all duration-200"
+                        className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs hover:border-action-primary hover:text-action-primary"
                     >
                         <Search className="w-3.5 h-3.5" />
                         <span>Välj recept</span>
                     </button>
                     <button
                         onClick={handleAddFreeText}
-                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 border border-dashed border-stone-700 rounded-lg text-xs font-medium text-stone-500 hover:border-stone-500 hover:text-stone-300 transition-all duration-200"
+                        className="ui-button ui-button-ghost border border-dashed border-border-strong flex-1 text-xs"
                     >
                         <Type className="w-3.5 h-3.5" />
                         <span>Fritext</span>

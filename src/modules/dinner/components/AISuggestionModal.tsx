@@ -51,22 +51,22 @@ export default function AISuggestionModal({ recipes, onClose, onAddRecipe }: AIS
       <div className="absolute inset-0" onClick={onClose} />
 
       {/* 🔥 FIX 2: Stabil Flex-behållare för mobilen */}
-      <div className="relative bg-stone-900 w-full max-w-2xl rounded-t-3xl sm:rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border-t border-stone-800 sm:border">
+      <div className="ui-sheet relative w-full max-w-2xl rounded-t-3xl sm:rounded-3xl flex flex-col max-h-[92vh] overflow-hidden">
         
         {/* Header - Statisk */}
-        <div className="flex-none px-6 py-5 border-b border-stone-800 flex items-center justify-between bg-stone-900/50 backdrop-blur-md">
+        <div className="flex-none px-6 py-5 border-b border-border-subtle flex items-center justify-between bg-surface-raised/90 backdrop-blur-md">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-accent/20 rounded-xl">
-              <ChefHat className="w-6 h-6 text-accent" />
+            <div className="p-2 bg-action-soft rounded-xl">
+              <ChefHat className="w-6 h-6 text-action-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-stone-100 tracking-tight">AI-förslag</h2>
-              <p className="text-xs text-stone-400">{recipes.length} recept hittade</p>
+              <h2 className="text-xl font-bold text-text-primary tracking-tight">AI-förslag</h2>
+              <p className="text-xs text-text-secondary">{recipes.length} recept hittade</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 bg-stone-800 text-stone-400 hover:text-stone-100 rounded-full transition-colors"
+            className="ui-icon-button rounded-full"
           >
             <X className="w-5 h-5" />
           </button>
@@ -81,17 +81,17 @@ export default function AISuggestionModal({ recipes, onClose, onAddRecipe }: AIS
             return (
               <div 
                 key={`ai-card-${recipe.id}`}
-                className={`bg-stone-800/40 rounded-2xl border transition-all duration-300 ${
-                  isAdded ? 'border-accent/50 bg-accent/5' : 'border-stone-700/50'
+                className={`ui-card rounded-2xl transition-all duration-300 ${
+                  isAdded ? 'border-action-primary bg-surface-selected' : ''
                 }`}
               >
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1 pr-4">
-                      <h3 className="text-lg font-bold text-stone-100 mb-1.5 leading-tight">
+                      <h3 className="text-lg font-bold text-text-primary mb-1.5 leading-tight">
                         {recipe.title}
                       </h3>
-                      <div className="flex items-center space-x-4 text-xs font-medium text-stone-500">
+                      <div className="flex items-center space-x-4 text-xs font-medium text-text-muted">
                         <span className="flex items-center"><Clock className="w-3 h-3 mr-1" />{recipe.cookingTime || 30} min</span>
                         <span className="flex items-center"><Users className="w-3 h-3 mr-1" />{recipe.portions} port</span>
                       </div>
@@ -101,18 +101,18 @@ export default function AISuggestionModal({ recipes, onClose, onAddRecipe }: AIS
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {recipe.tags?.map((tag, i) => (
-                      <span key={`${recipe.id}-t-${i}`} className="px-2 py-0.5 bg-stone-900 text-[10px] font-bold uppercase tracking-widest text-accent-light/70 rounded">
+                      <span key={`${recipe.id}-t-${i}`} className="px-2 py-0.5 bg-surface-sunken text-[10px] font-bold uppercase tracking-widest text-action-primary rounded">
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-stone-700/30">
+                  <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border-subtle">
                     <select
                       value={selectedDates[recipe.id] || ''}
                       onChange={(e) => setSelectedDates(prev => ({ ...prev, [recipe.id]: e.target.value }))}
                       disabled={isAdded}
-                      className="flex-1 bg-stone-900 border border-stone-700 text-stone-200 text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-accent disabled:opacity-50 appearance-none"
+                      className="ui-input flex-1 text-sm appearance-none disabled:opacity-50"
                     >
                       <option value="">Välj dag...</option>
                       {next7Days.map(day => (
@@ -125,10 +125,10 @@ export default function AISuggestionModal({ recipes, onClose, onAddRecipe }: AIS
                       disabled={!isDateSelected || isAdded}
                       className={`flex items-center justify-center px-6 py-3 rounded-xl font-bold transition-all ${
                         isAdded
-                          ? 'bg-accent/20 text-accent'
+                          ? 'bg-action-soft text-action-primary'
                           : isDateSelected
-                          ? 'bg-accent text-white shadow-lg active:scale-95'
-                          : 'bg-stone-800 text-stone-600'
+                          ? 'bg-action-primary text-text-inverse shadow-card active:scale-95'
+                          : 'bg-surface-sunken text-text-muted'
                       }`}
                     >
                       {isAdded ? <><Check className="w-4 h-4 mr-2" />Tillagd</> : <><PlusCircle className="w-4 h-4 mr-2" />Välj</>}
@@ -141,7 +141,7 @@ export default function AISuggestionModal({ recipes, onClose, onAddRecipe }: AIS
         </div>
         
         {/* En liten gradient i botten för att signalera scroll */}
-        <div className="flex-none h-6 bg-gradient-to-t from-stone-900 to-transparent pointer-events-none" />
+        <div className="flex-none h-6 bg-gradient-to-t from-surface-raised to-transparent pointer-events-none" />
       </div>
     </div>
   );

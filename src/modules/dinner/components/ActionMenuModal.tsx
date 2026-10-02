@@ -46,17 +46,17 @@ export default function ActionMenuModal({
             onClick={onClose}
         >
             <div 
-                className="bg-stone-800 w-full max-w-md rounded-t-2xl sm:rounded-2xl overflow-y-auto overscroll-contain flex flex-col border border-stone-700/40 max-h-[80vh]"
+                className="ui-sheet w-full max-w-md rounded-t-2xl sm:rounded-2xl overflow-y-auto overscroll-contain flex flex-col max-h-[80vh]"
                 onClick={(e) => e.stopPropagation()}
             >
 
-                <div className="px-4 py-3 border-b border-stone-700/40 flex items-center justify-between">
-                    <h2 className="text-base font-semibold text-stone-100">
+                <div className="px-4 py-3 border-b border-border-subtle flex items-center justify-between">
+                    <h2 className="text-base font-semibold text-text-primary">
                         {mode === 'move' ? 'Välj ny dag' : 'Hantera måltid'}
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-1.5 bg-stone-700 text-stone-400 hover:text-stone-100 rounded-lg transition-all duration-200"
+                        className="ui-icon-button h-8 w-8"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -64,20 +64,20 @@ export default function ActionMenuModal({
 
                 <div className="px-4 pt-4 pb-32">
                     <div className="flex items-center mb-4 gap-3">
-                        <div className="h-10 w-10 min-w-[40px] rounded-lg bg-stone-700 overflow-hidden flex-shrink-0 border border-stone-600/40">
+                        <div className="h-10 w-10 min-w-[40px] rounded-lg bg-surface-sunken overflow-hidden flex-shrink-0 border border-border-subtle">
                             {recipe?.imageUrl ? (
                                 <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full bg-stone-700 flex items-center justify-center text-lg">
+                                <div className="w-full h-full bg-surface-sunken flex items-center justify-center text-lg">
                                     {mealPlanItem.isFreeText ? '📝' : '🍲'}
                                 </div>
                             )}
                         </div>
                         <div>
-                            <p className="font-semibold text-stone-100 text-sm leading-snug">
+                            <p className="font-semibold text-text-primary text-sm leading-snug">
                                 {mealPlanItem.isFreeText ? mealPlanItem.freeText : recipe?.title}
                             </p>
-                            <p className="text-xs text-stone-500 mt-0.5 capitalize">
+                            <p className="text-xs text-text-muted mt-0.5 capitalize">
                                 {format(currentDate, 'EEEE d/M', { locale: sv })}
                             </p>
                         </div>
@@ -86,14 +86,14 @@ export default function ActionMenuModal({
                     {mode === 'menu' ? (
                         <div className="space-y-3">
                             {!mealPlanItem.isFreeText && (
-                                <div className="flex items-center justify-between p-3 bg-stone-700/40 rounded-lg border border-stone-600/40 mb-2">
-                                    <span className="font-medium text-stone-300 text-sm">Portioner</span>
-                                    <div className="flex items-center gap-3 bg-stone-800 px-2.5 py-1.5 rounded-lg border border-stone-600/50">
-                                        <button onClick={() => onUpdatePortions(-1)} className="p-0.5 hover:bg-stone-700 rounded text-stone-400 transition-all duration-200">
+                                <div className="flex items-center justify-between p-3 bg-surface-sunken rounded-lg border border-border-subtle mb-2">
+                                    <span className="font-medium text-text-secondary text-sm">Portioner</span>
+                                    <div className="flex items-center gap-3 bg-surface-raised px-2.5 py-1.5 rounded-lg border border-border-strong">
+                                        <button onClick={() => onUpdatePortions(-1)} className="ui-icon-button h-6 w-6">
                                             <Minus className="w-4 h-4" />
                                         </button>
-                                        <span className="font-bold w-5 text-center text-stone-100">{mealPlanItem.adjustedPortions}</span>
-                                        <button onClick={() => onUpdatePortions(1)} className="p-0.5 hover:bg-stone-700 rounded text-stone-400 transition-all duration-200">
+                                        <span className="font-bold w-5 text-center text-text-primary">{mealPlanItem.adjustedPortions}</span>
+                                        <button onClick={() => onUpdatePortions(1)} className="ui-icon-button h-6 w-6">
                                             <Plus className="w-4 h-4" />
                                         </button>
                                     </div>
@@ -103,19 +103,19 @@ export default function ActionMenuModal({
                             {recipe && onViewRecipe && (
                                 <button
                                     onClick={() => { onClose(); onViewRecipe(); }}
-                                    className="w-full flex items-center gap-3 p-3 bg-stone-700/30 border border-stone-600/40 hover:border-accent/40 hover:bg-accent/5 rounded-lg transition-all duration-200"
+                                    className="ui-button ui-button-secondary w-full justify-start"
                                 >
-                                    <BookOpen className="w-4 h-4 text-accent" />
-                                    <span className="text-sm font-medium text-stone-300">Visa recept</span>
+                                    <BookOpen className="w-4 h-4 text-action-primary" />
+                                    <span className="text-sm">Visa recept</span>
                                 </button>
                             )}
 
                             <button
                                 onClick={() => setMode('move')}
-                                className="w-full flex items-center gap-3 p-3 bg-stone-700/30 border border-stone-600/40 hover:border-accent/40 hover:bg-accent/5 rounded-lg transition-all duration-200"
+                                className="ui-button ui-button-secondary w-full justify-start"
                             >
-                                <Move className="w-4 h-4 text-accent" />
-                                <span className="text-sm font-medium text-stone-300">Flytta / Byt dag</span>
+                                <Move className="w-4 h-4 text-action-primary" />
+                                <span className="text-sm">Flytta / Byt dag</span>
                             </button>
 
                             <button
@@ -124,7 +124,7 @@ export default function ActionMenuModal({
                                     onRemove(); 
                                     onClose(); 
                                 }}
-                                className="w-full flex items-center justify-center gap-3 p-4 bg-red-500/10 border-2 border-red-500/30 hover:bg-red-500/20 text-red-500 rounded-xl transition-all duration-200 font-bold text-sm mt-6 shadow-sm shadow-red-900/10 active:scale-[0.98]"
+                                className="ui-button ui-button-danger w-full mt-6"
                             >
                                 <Trash2 className="w-5 h-5" />
                                 Töm denna dag (Ta bort)
@@ -142,14 +142,14 @@ export default function ActionMenuModal({
                                         onClick={() => { onMove(dateStr); onClose(); }}
                                         className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all duration-200 text-left text-sm ${
                                             isCurrent
-                                                ? 'bg-stone-700/20 border-stone-700/30 opacity-30 cursor-not-allowed'
-                                                : 'bg-stone-700/30 border-stone-600/40 hover:border-accent/40 hover:bg-accent/5'
+                                                ? 'bg-surface-sunken border-border-subtle opacity-30 cursor-not-allowed'
+                                                : 'bg-surface-raised border-border-subtle hover:border-action-primary hover:bg-surface-selected'
                                         }`}
                                     >
-                                        <span className={`font-medium capitalize ${isCurrent ? 'text-stone-500' : 'text-stone-200'}`}>
+                                        <span className={`font-medium capitalize ${isCurrent ? 'text-text-muted' : 'text-text-primary'}`}>
                                             {format(day, 'EEEE', { locale: sv })}
                                         </span>
-                                        <span className="text-xs text-stone-500">
+                                        <span className="text-xs text-text-muted">
                                             {format(day, 'd MMM', { locale: sv })}
                                         </span>
                                     </button>
@@ -158,7 +158,7 @@ export default function ActionMenuModal({
 
                             <button
                                 onClick={() => setMode('menu')}
-                                className="w-full p-3 mt-1 text-stone-500 text-sm font-medium hover:text-stone-300 transition-all duration-200"
+                                className="ui-button ui-button-ghost w-full mt-1"
                             >
                                 Tillbaka
                             </button>

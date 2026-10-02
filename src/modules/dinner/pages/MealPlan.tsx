@@ -69,13 +69,13 @@ export default function MealPlan() {
     };
 
     return (
-        <div className="p-4 pt-5 min-h-screen">
+        <div className="app-page min-h-screen">
             <header className="mb-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold text-stone-100 tracking-tight">Matsedel</h1>
+                    <h1 className="text-2xl font-bold text-text-primary tracking-tight">Matsedel</h1>
                     <button
                         onClick={handleOpenPrefs}
-                        className="p-2.5 bg-accent/15 hover:bg-accent/25 text-accent-light rounded-lg transition-all duration-200 active:scale-95"
+                        className="ui-icon-button bg-action-soft text-action-primary active:scale-95"
                         aria-label="Föreslå hela veckan"
                     >
                         <Sparkles className="w-4 h-4" />
@@ -83,25 +83,25 @@ export default function MealPlan() {
                 </div>
 
                 {/* Week nav */}
-                <div className="flex items-center justify-between bg-stone-800/80 border border-stone-700/50 rounded-xl p-1.5">
+                <div className="ui-card flex items-center justify-between p-1.5">
                     <button
                         onClick={() => setWeekOffset(prev => prev - 1)}
-                        className="p-2 text-stone-400 hover:text-accent hover:bg-stone-700 rounded-lg transition-all duration-200"
+                        className="ui-icon-button"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
                     <div className="text-center">
-                        <p className="font-semibold text-stone-200 text-sm capitalize">
+                        <p className="font-semibold text-text-primary text-sm capitalize">
                             {format(weekDays[0], 'MMMM', { locale: sv })}
                         </p>
-                        <p className="text-[10px] font-bold text-accent uppercase tracking-wider">
+                        <p className="text-[10px] font-bold text-action-primary uppercase tracking-wider">
                             Vecka {format(weekStart, 'w', { locale: sv })}
-                            {weekOffset === 0 && <span className="ml-1 text-stone-600 font-medium normal-case">(nuv.)</span>}
+                            {weekOffset === 0 && <span className="ml-1 text-text-muted font-medium normal-case">(nuv.)</span>}
                         </p>
                     </div>
                     <button
                         onClick={() => setWeekOffset(prev => prev + 1)}
-                        className="p-2 text-stone-400 hover:text-accent hover:bg-stone-700 rounded-lg transition-all duration-200"
+                        className="ui-icon-button"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
@@ -121,10 +121,10 @@ export default function MealPlan() {
             </div>
 
             {/* Generate shopping list button */}
-            <div className="fixed bottom-16 left-0 w-full px-4 md:max-w-2xl md:left-1/2 md:-translate-x-1/2 z-40 pb-2 pt-6 bg-gradient-to-t from-stone-900 via-stone-900/80 to-transparent">
+            <div className="fixed bottom-16 left-0 z-40 w-full bg-gradient-to-t from-surface-canvas via-surface-canvas/80 to-transparent px-4 pb-2 pt-6 md:left-1/2 md:max-w-2xl md:-translate-x-1/2">
                 <button
                     onClick={handleGenerateShoppingList}
-                    className="w-full bg-stone-100 hover:bg-white text-stone-900 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-all duration-200 active:scale-[0.99]"
+                    className="ui-button ui-button-primary w-full active:scale-[0.99]"
                 >
                     <ShoppingCart className="w-4 h-4" />
                     <span>Generera inköpslista</span>

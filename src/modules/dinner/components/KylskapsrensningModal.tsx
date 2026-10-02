@@ -46,24 +46,24 @@ export default function KylskapsrensningModal({ onClose, onRecipeGenerated }: Ky
             onClick={onClose}
         >
             <div 
-                className="bg-stone-900 w-full max-w-md rounded-t-2xl sm:rounded-2xl border border-stone-700/40 overflow-y-auto overscroll-contain flex flex-col max-h-[80vh]"
+                className="ui-sheet w-full max-w-md rounded-t-2xl sm:rounded-2xl overflow-y-auto overscroll-contain flex flex-col max-h-[80vh]"
                 onClick={(e) => e.stopPropagation()}
             >
 
                 {/* Header */}
-                <div className="px-4 py-3 border-b border-stone-700/40 flex items-center justify-between flex-shrink-0">
+                <div className="px-4 py-3 border-b border-border-subtle flex items-center justify-between flex-shrink-0">
                     <div className="flex items-center gap-2.5">
-                        <div className="p-1.5 bg-accent/10 rounded-lg">
-                            <Leaf className="w-4 h-4 text-accent-light" />
+                        <div className="p-1.5 bg-action-soft rounded-lg">
+                            <Leaf className="w-4 h-4 text-action-primary" />
                         </div>
                         <div>
-                            <h2 className="text-sm font-semibold text-stone-100">Kylskåpsrensning</h2>
-                            <p className="text-[10px] text-stone-500">AI genererar recept från dina rester</p>
+                            <h2 className="text-sm font-semibold text-text-primary">Kylskåpsrensning</h2>
+                            <p className="text-[10px] text-text-muted">AI genererar recept från dina rester</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-1.5 bg-stone-800 text-stone-400 hover:text-stone-100 rounded-lg transition-all duration-200"
+                        className="ui-icon-button h-8 w-8"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -74,54 +74,54 @@ export default function KylskapsrensningModal({ onClose, onRecipeGenerated }: Ky
 
                     {/* Camera section */}
                     <div>
-                        <p className="text-xs font-medium text-stone-400 mb-2">📸 Steg 1: Scanna kylskåpet</p>
+                        <p className="text-xs font-medium text-text-secondary mb-2">📸 Steg 1: Scanna kylskåpet</p>
 
                         {scanState === 'idle' && (
                             <button
                                 onClick={handleScan}
-                                className="w-full bg-stone-800 border border-stone-700/60 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-stone-600 hover:bg-stone-750 transition-all duration-200 active:scale-[0.99]"
+                                className="ui-card w-full p-6 flex flex-col items-center justify-center gap-3 hover:border-border-strong transition-all duration-200 active:scale-[0.99]"
                             >
-                                <div className="p-3 bg-stone-700 rounded-full">
-                                    <Camera className="w-7 h-7 text-stone-300" />
+                                <div className="p-3 bg-surface-sunken rounded-full">
+                                    <Camera className="w-7 h-7 text-text-secondary" />
                                 </div>
                                 <div className="text-center">
-                                    <p className="font-medium text-stone-200 text-sm">Ta bild på kylskåpet</p>
-                                    <p className="text-xs text-stone-500 mt-0.5">AI analyserar råvaror automatiskt</p>
+                                    <p className="font-medium text-text-primary text-sm">Ta bild på kylskåpet</p>
+                                    <p className="text-xs text-text-muted mt-0.5">AI analyserar råvaror automatiskt</p>
                                 </div>
                             </button>
                         )}
 
                         {scanState === 'scanning' && (
-                            <div className="w-full bg-stone-800 border border-stone-700/40 rounded-xl p-6 flex flex-col items-center justify-center gap-3">
+                            <div className="ui-card w-full p-6 flex flex-col items-center justify-center gap-3">
                                 <div className="relative w-14 h-14 flex items-center justify-center">
-                                    <div className="absolute inset-0 rounded-full border-2 border-accent/30 animate-ping" />
-                                    <Camera className="w-7 h-7 text-stone-300 animate-pulse" />
+                                    <div className="absolute inset-0 rounded-full border-2 border-action-primary/30 animate-ping" />
+                                    <Camera className="w-7 h-7 text-text-secondary animate-pulse" />
                                 </div>
-                                <p className="text-sm font-medium text-stone-300">Analyserar bild...</p>
+                                <p className="text-sm font-medium text-text-secondary">Analyserar bild...</p>
                                 <div className="flex gap-1">
                                     {[0, 1, 2].map(i => (
-                                        <div key={i} className="w-1.5 h-1.5 bg-accent rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                                        <div key={i} className="w-1.5 h-1.5 bg-action-primary rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
                                     ))}
                                 </div>
                             </div>
                         )}
 
                         {scanState === 'done' && (
-                            <div className="w-full bg-accent/10 border border-accent/25 rounded-xl p-3.5 flex items-center gap-3">
-                                <div className="w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-stone-800 flex items-center justify-center text-3xl">
+                            <div className="w-full bg-action-soft border border-action-primary/25 rounded-xl p-3.5 flex items-center gap-3">
+                                <div className="w-14 h-14 flex-shrink-0 rounded-lg overflow-hidden bg-surface-raised flex items-center justify-center text-3xl">
                                     🥗
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-1.5 mb-1">
-                                        <CheckCircle2 className="w-4 h-4 text-accent-light flex-shrink-0" />
-                                        <span className="text-sm font-semibold text-stone-100">Bild analyserad!</span>
+                                        <CheckCircle2 className="w-4 h-4 text-action-primary flex-shrink-0" />
+                                        <span className="text-sm font-semibold text-text-primary">Bild analyserad!</span>
                                     </div>
-                                    <p className="text-xs text-stone-400">
+                                    <p className="text-xs text-text-secondary">
                                         Identifierat: ägg, paprika, spenat, ost...
                                     </p>
                                     <button
                                         onClick={() => setScanState('idle')}
-                                        className="mt-1.5 text-[10px] text-accent-light hover:text-accent underline"
+                                        className="mt-1.5 text-[10px] text-action-primary hover:text-action-primary-hover underline"
                                     >
                                         Ta ny bild
                                     </button>
@@ -132,12 +132,12 @@ export default function KylskapsrensningModal({ onClose, onRecipeGenerated }: Ky
 
                     {/* Text input */}
                     <div>
-                        <p className="text-xs font-medium text-stone-400 mb-2">📝 Steg 2: Övriga ingredienser</p>
+                        <p className="text-xs font-medium text-text-secondary mb-2">📝 Steg 2: Övriga ingredienser</p>
                         <textarea
                             value={extraIngredients}
                             onChange={e => setExtraIngredients(e.target.value)}
                             placeholder="T.ex. pasta, kokosmjölk, frysta ärtor..."
-                            className="w-full bg-stone-800 border border-stone-700/60 rounded-xl py-2.5 px-3 text-stone-200 placeholder:text-stone-600 focus:outline-none focus:ring-1 focus:ring-accent/50 focus:border-accent transition-all duration-200 resize-none text-base h-20"
+                            className="ui-input h-20 resize-none text-base"
                         />
                     </div>
 
@@ -145,7 +145,7 @@ export default function KylskapsrensningModal({ onClose, onRecipeGenerated }: Ky
                     <button
                         onClick={handleGenerate}
                         disabled={isGenerating || (scanState === 'idle' && !extraIngredients.trim())}
-                        className="w-full bg-accent hover:bg-accent-dark text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
+                        className="ui-button ui-button-primary w-full disabled:opacity-50 active:scale-[0.99]"
                     >
                         {isGenerating ? (
                             <>
@@ -161,7 +161,7 @@ export default function KylskapsrensningModal({ onClose, onRecipeGenerated }: Ky
                     </button>
 
                     {scanState === 'idle' && !extraIngredients.trim() && (
-                        <p className="text-center text-[11px] text-stone-600 -mt-2">
+                        <p className="text-center text-[11px] text-text-muted -mt-2">
                             Ta en bild eller beskriv dina rester för att börja
                         </p>
                     )}
