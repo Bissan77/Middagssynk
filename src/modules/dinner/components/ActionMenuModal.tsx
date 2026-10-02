@@ -3,6 +3,7 @@ import type { MealPlanItem, Recipe } from '../../../core/types';
 import { X, Plus, Minus, Move, Trash2, BookOpen } from 'lucide-react';
 import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { DINNER_WEEK_STARTS_ON } from '../lib/week';
 
 interface ActionMenuModalProps {
     mealPlanItem: MealPlanItem;
@@ -35,7 +36,7 @@ export default function ActionMenuModal({
     }, []);
 
     // Generate week days for moving
-    const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 }); // Sunday
+    const weekStart = startOfWeek(currentDate, { weekStartsOn: DINNER_WEEK_STARTS_ON });
     const weekDays = useMemo(() => {
         return Array.from({ length: 7 }).map((_, i) => addDays(weekStart, i));
     }, [weekStart]);

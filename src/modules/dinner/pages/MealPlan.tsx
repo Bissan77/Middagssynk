@@ -8,6 +8,7 @@ import AIPreferencesModal from '../components/AIPreferencesModal';
 import AISuggestionModal from '../components/AISuggestionModal';
 import { generateAIRecipes } from '../services/ai';
 import type { Recipe, AIPreferences } from '../../../core/types';
+import { DINNER_WEEK_STARTS_ON } from '../lib/week';
 
 export default function MealPlan() {
     const mealPlan = useStore(state => state.mealPlan);
@@ -23,7 +24,7 @@ export default function MealPlan() {
     const [isAILoading, setIsAILoading] = useState(false);
 
     const weekStart = useMemo(
-        () => addDays(startOfWeek(new Date(), { weekStartsOn: 0 }), weekOffset * 7),
+        () => addDays(startOfWeek(new Date(), { weekStartsOn: DINNER_WEEK_STARTS_ON }), weekOffset * 7),
         [weekOffset]
     );
     const weekDays = useMemo(() => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)), [weekStart]);

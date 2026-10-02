@@ -1,9 +1,7 @@
 import { addDays, format, startOfWeek } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import type { MealPlanItem, Recipe } from '../../../core/types';
-
-/** Dashboard visar måndag–söndag. MealPlan.tsx använder fortfarande weekStartsOn: 0 (söndag) — separat skuld. */
-export const DASHBOARD_WEEK_STARTS_ON = 1 as const;
+import { DINNER_WEEK_STARTS_ON } from './week';
 
 export type DashboardMealKind = 'recipe' | 'freeText';
 
@@ -96,7 +94,7 @@ export function selectDashboardWeek(
   recipes: Recipe[],
   now: Date = new Date(),
 ): DashboardWeekDay[] {
-  const weekStart = startOfWeek(now, { weekStartsOn: DASHBOARD_WEEK_STARTS_ON });
+  const weekStart = startOfWeek(now, { weekStartsOn: DINNER_WEEK_STARTS_ON });
   const todayStr = format(now, 'yyyy-MM-dd');
 
   return Array.from({ length: 7 }, (_, index) => {

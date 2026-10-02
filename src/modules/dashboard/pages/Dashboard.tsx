@@ -1,21 +1,15 @@
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Link } from 'react-router-dom';
 import { UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import { auth } from '../../../core/firebase';
 import { generateInviteCode } from '../../../core/services/invite';
 import { useStore } from '../../../core/store/useStore';
-import {
-  selectDashboardWeek,
-  selectTodayMeal,
-  type DashboardMeal,
-  type DashboardWeekDay,
-} from '../lib/dinnerSelectors';
+import DinnerWeekOverview from '../../dinner/components/DinnerWeekOverview';
+import { useDinnerDashboardCard } from '../../dinner/hooks/useDinnerDashboardCard';
+import DashboardCard from '../components/DashboardCard';
 
-// TODO(design): Dashboarden är ljus medan AuthenticatedApp, Navbar och dinner-sidorna
-// fortfarande är mörka. Byt skal och dinner-styling i den planerade dinner-redesignen —
-// mörkt tema är hårdkodat i komponenterna, inte bara i App.tsx.
+// TODO(design): AuthenticatedApp och vissa inloggningsvyer har fortfarande mörka skal.
 
 function DashboardHeader({ now }: { now: Date }) {
   return (
@@ -27,99 +21,6 @@ function DashboardHeader({ now }: { now: Date }) {
         {format(now, 'd MMMM', { locale: sv })}
       </h1>
     </header>
-  );
-}
-
-function TodaySection({ meal }: { meal: DashboardMeal | null }) {
-  return (
-    <section className="mb-12">
-      <div className="mb-3 flex items-baseline justify-between gap-4">
-        <h2 className="text-sm font-medium text-text-secondary">Idag</h2>
-        <Link
-          to="/plan"
-          className="text-sm text-text-secondary underline-offset-4 transition hover:text-text-primary hover:underline"
-        >
-          Öppna matsedel
-        </Link>
-      </div>
-
-      <Link
-        to="/plan"
-        className="ui-card block rounded-3xl px-6 py-7 transition hover:border-border-strong"
-      >
-        {meal ? (
-          <div className="flex items-center gap-5">
-            {meal.imageUrl ? (
-              <img
-                src={meal.imageUrl}
-                alt=""
-                className="h-16 w-16 flex-shrink-0 rounded-2xl object-cover"
-              />
-            ) : (
-              <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-surface-sunken text-text-muted">
-                <span className="text-lg" aria-hidden="true">
-                  {meal.kind === 'freeText' ? '·' : '○'}
-                </span>
-              </div>
-            )}
-            <div className="min-w-0">
-              <p className="text-xl font-medium leading-snug text-text-primary">
-                {meal.title}
-              </p>
-              {meal.portions !== null && (
-                <p className="mt-1 text-sm text-text-secondary">
-                  {meal.portions} portioner
-                </p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div>
-            <p className="text-xl font-medium text-text-primary">
-              Ingen middag planerad idag
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-              När något läggs in i matsedeln syns det här.
-            </p>
-          </div>
-        )}
-      </Link>
-    </section>
-  );
-}
-
-function WeekSection({ days }: { days: DashboardWeekDay[] }) {
-  return (
-    <section>
-      <h2 className="mb-3 text-sm font-medium text-text-secondary">Denna vecka</h2>
-      <ul className="ui-card overflow-hidden rounded-3xl">
-        {days.map((day) => (
-          <li key={day.dateStr} className="border-b border-border-subtle last:border-b-0">
-            <Link
-              to="/plan"
-              className="flex items-baseline justify-between gap-4 px-6 py-4 transition hover:bg-surface-sunken"
-            >
-              <span
-                className={`w-28 flex-shrink-0 capitalize ${
-                  day.isToday
-                    ? 'font-medium text-text-primary'
-                    : 'text-text-secondary'
-                }`}
-              >
-                {day.weekdayLabel}
-              </span>
-              <span
-                className={`min-w-0 truncate text-right ${
-                  day.meal ? 'text-text-primary' : 'text-text-muted'
-                }`}
-              >
-                {day.meal ? day.meal.title : '—'}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
   );
 }
 
@@ -183,29 +84,16 @@ function HouseholdSection() {
 }
 
 export default function Dashboard() {
-  const mealPlan = useStore((state) => state.mealPlan);
-  const recipes = useStore((state) => state.recipes);
-  const isLoaded = useStore((state) => state.isLoaded);
   const now = new Date();
+  const dinnerCard = useDinnerDashboardCard(now);
 
   const surfaceClassName = '-mx-4 -mt-4 -mb-24 min-h-screen bg-surface-canvas px-6 pb-24 pt-10 text-text-primary';
-
-  if (!isLoaded) {
-    return (
-      <div className={surfaceClassName}>
-        <p className="text-sm text-text-secondary">Hämtar översikten…</p>
-      </div>
-    );
-  }
-
-  const todayMeal = selectTodayMeal(mealPlan, recipes, now);
-  const weekDays = selectDashboardWeek(mealPlan, recipes, now);
 
   return (
     <div className={surfaceClassName}>
       <DashboardHeader now={now} />
-      <TodaySection meal={todayMeal} />
-      <WeekSection days={weekDays} />
+      <DashboardCard state={dinnerCard} />
+      <DinnerWeekOverview now={now} />
       <HouseholdSection />
     </div>
   );
