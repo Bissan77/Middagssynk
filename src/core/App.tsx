@@ -5,6 +5,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import AuthScreen from './components/AuthScreen';
 import HouseholdSetup from './components/HouseholdSetup';
 import Navbar from './components/Navbar';
+import Dashboard from '../modules/dashboard/pages/Dashboard';
 import MealPlan from '../modules/dinner/pages/MealPlan';
 import RecipeBank from '../modules/dinner/pages/RecipeBank';
 import ShoppingList from '../modules/dinner/pages/ShoppingList';
@@ -55,7 +56,8 @@ function AuthenticatedApp({ householdId }: AuthenticatedAppProps) {
       <div className="min-h-screen bg-stone-900 text-stone-100 selection:bg-accent/30">
         <main className="max-w-2xl mx-auto px-4 pb-24 pt-4">
           <Routes>
-            <Route path="/" element={<MealPlan />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/plan" element={<MealPlan />} />
             <Route path="/recipes" element={<RecipeBank />} />
             <Route path="/shopping-list" element={<ShoppingList />} />
           </Routes>

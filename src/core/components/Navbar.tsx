@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Book, ShoppingCart, UserPlus } from 'lucide-react';
+import { Calendar, Book, ShoppingCart, UserPlus, Home } from 'lucide-react';
 import { auth } from '../firebase';
 import { generateInviteCode } from '../services/invite';
 import { useStore } from '../store/useStore';
@@ -81,7 +81,10 @@ export default function Navbar() {
       {/* Din intakta bottenmeny */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-stone-900 border-t border-stone-800 pb-safe">
         <div className="max-w-2xl mx-auto flex justify-around p-3">
-          <Link title="Matsedel" to="/" className="p-2 text-stone-400 hover:text-accent">
+          <Link title="Hem" to="/" className="p-2 text-stone-400 hover:text-accent">
+            <Home />
+          </Link>
+          <Link title="Matsedel" to="/plan" className="p-2 text-stone-400 hover:text-accent">
             <Calendar />
           </Link>
           <Link title="Recept" to="/recipes" className="p-2 text-stone-400 hover:text-accent">
