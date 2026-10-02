@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Users, Plus, Minus, Trash2 } from 'lucide-react';
 import type { Recipe } from '../../../core/types';
 import { useStore } from '../../../core/store/useStore';
+import { normalizeInstructions, normalizePortions } from '../lib/recipeValidation';
 
 interface RecipeDetailsModalProps {
     recipe: Recipe;
@@ -10,7 +11,8 @@ interface RecipeDetailsModalProps {
 
 export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsModalProps) {
     const deleteRecipe = useStore(state => state.deleteRecipe);
-    const [currentPortions, setCurrentPortions] = useState(recipe.portions);
+    const basePortions = normalizePortions(recipe.portions);
+    const [currentPortions, setCurrentPortions] = useState(basePortions);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -19,7 +21,13 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
         };
     }, []);
 
-    const steps = recipe.instructions
+    let instructions = '';
+    try {
+        instructions = normalizeInstructions(recipe.instructions);
+    } catch {
+        instructions = 'Instruktionerna kunde inte visas.';
+    }
+    const steps = instructions
         .split('\n')
         .map(s => s.trim())
         .filter(Boolean);
@@ -108,7 +116,7 @@ export default function RecipeDetailsModal({ recipe, onClose }: RecipeDetailsMod
                         </h2>
                         <div className="bg-stone-800 rounded-xl border border-stone-700/40 overflow-hidden divide-y divide-stone-700/30">
                             {recipe.ingredients.map((ing, idx) => {
-                                const scaledAmount = Math.round((ing.amount * (currentPortions / recipe.portions)) * 10) / 10;
+                                const scaledAmount = Math.round((ing.amount * (currentPortions / basePortions)) * 10) / 10;
                                 return (
                                     <div key={ing.id ?? idx} className="flex items-center justify-between px-3 py-2.5">
                                         <span className="text-stone-200 text-sm">{ing.name}</span>

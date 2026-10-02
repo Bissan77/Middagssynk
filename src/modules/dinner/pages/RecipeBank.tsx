@@ -38,7 +38,7 @@ export default function RecipeBank() {
         setIsImporting(true);
         try {
             const newRecipe = await importRecipeFromUrl(importUrl);
-            addRecipe(newRecipe);
+            await addRecipe(newRecipe);
             setImportUrl('');
             alert(`Receptet "${newRecipe.title}" har importerats!`);
         } catch {

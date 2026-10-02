@@ -1,5 +1,6 @@
 import type { AIPreferences, Recipe } from '../../../core/types';
 import { useStore } from '../../../core/store/useStore';
+import { normalizeImportedRecipe } from '../lib/recipeValidation';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
@@ -82,19 +83,12 @@ Det är just nu ${currentMonth}.
 }
 
 export async function importRecipeFromUrl(url: string): Promise<Recipe> {
-    const prompt = `Extrahera recept från URL: ${url}. Svara ENBART med JSON.`;
+    const prompt = `Extrahera recept från URL: ${url}. Svara ENBART med ett JSON-objekt enligt denna struktur:
+{"title":"Receptnamn","portions":4,"ingredients":[{"name":"Råvara","amount":2,"unit":"st","category":"Övrigt","isStaple":false}],"instructions":"Första steget\\nAndra steget","tags":["Middag"]}.
+Använd exakt dessa fältnamn. Varje ingrediens måste ha name (text), amount (tal, inte mängd och enhet i samma text) och unit (text). portions ska vara ett positivt tal. instructions ska vara text med ett steg per rad.`;
     const rawRecipe = await callGemini(prompt);
 
-    return {
-        ...rawRecipe,
-        id: `url-rec-${crypto.randomUUID()}`,
-        cookingTime: rawRecipe.cookingTime || 30,
-        tags: rawRecipe.tags || [],
-        ingredients: rawRecipe.ingredients.map((ing: any) => ({
-            ...ing,
-            id: `url-ing-${crypto.randomUUID()}`
-        }))
-    } as Recipe;
+    return normalizeImportedRecipe(rawRecipe);
 }
 
 // FIX: Nu accepterar vi både en sträng OCH en array för ingredienser
